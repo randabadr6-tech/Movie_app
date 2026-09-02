@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Movix</title>
+  
+  <style>
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      background: #08051F;
+      overflow: hidden;
+    }
+    
+    #splash {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(ellipse at center, #1A1040 0%, #08051F 70%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      z-index: 9999;
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    #splash.hide {
+      opacity: 0;
+      transform: scale(1.1);
+      pointer-events: none;
+    }
+
+    #particles {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .particle {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: rgba(91, 75, 255, 0.3);
+      border-radius: 50%;
+      animation: floatParticle linear infinite;
+    }
+
+    @keyframes floatParticle {
+      0% {
+        transform: translateY(100vh) rotate(0deg);
+        opacity: 0;
+      }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% {
+        transform: translateY(-100vh) rotate(720deg);
+        opacity: 0;
+      }
+    }
+
+    .logo-wrapper {
+      position: relative;
+      z-index: 2;
+      animation: logoFloat 3s ease-in-out infinite;
+    }
+
+    @keyframes logoFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-15px); }
+    }
+
+    .logo-wrapper img {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      box-shadow: 
+        0 0 60px rgba(91, 75, 255, 0.3),
+        0 0 120px rgba(91, 75, 255, 0.15),
+        inset 0 0 30px rgba(91, 75, 255, 0.1);
+      border: 3px solid rgba(91, 75, 255, 0.2);
+      animation: logoGlow 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes logoGlow {
+      0% {
+        box-shadow: 0 0 40px rgba(91, 75, 255, 0.3);
+      }
+      100% {
+        box-shadow: 0 0 80px rgba(91, 75, 255, 0.5), 0 0 150px rgba(91, 75, 255, 0.2);
+      }
+    }
+
+    .ring {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      border-radius: 50%;
+      border: 2px solid rgba(91, 75, 255, 0.15);
+      transform: translate(-50%, -50%);
+      animation: ringExpand 3s ease-out infinite;
+    }
+
+    .ring:nth-child(2) {
+      animation-delay: 1s;
+    }
+
+    .ring:nth-child(3) {
+      animation-delay: 2s;
+    }
+
+    @keyframes ringExpand {
+      0% {
+        width: 140px;
+        height: 140px;
+        opacity: 1;
+      }
+      100% {
+        width: 300px;
+        height: 300px;
+        opacity: 0;
+      }
+    }
+
+    .app-name {
+      margin-top: 30px;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      font-size: 36px;
+      font-weight: 800;
+      letter-spacing: 6px;
+      z-index: 2;
+      animation: textPulse 2s ease-in-out infinite;
+      
+      background: linear-gradient(135deg, #FFFFFF 0%, #A89BFF 50%, #5B4BFF 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-shadow: none;
+    }
+
+    @keyframes textPulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.7; }
+    }
+
+    .subtitle {
+      margin-top: 8px;
+      color: rgba(255, 255, 255, 0.3);
+      font-family: 'Segoe UI', Arial, sans-serif;
+      font-size: 13px;
+      letter-spacing: 8px;
+      text-transform: uppercase;
+      z-index: 2;
+    }
+
+    .loader {
+      margin-top: 40px;
+      display: flex;
+      gap: 14px;
+      z-index: 2;
+    }
+
+    .loader .dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      animation: dotBounce 1.4s ease-in-out infinite both;
+    }
+
+    .loader .dot:nth-child(1) {
+      background: #5B4BFF;
+      animation-delay: -0.32s;
+    }
+
+    .loader .dot:nth-child(2) {
+      background: #7B6BFF;
+      animation-delay: -0.16s;
+    }
+
+    .loader .dot:nth-child(3) {
+      background: #A89BFF;
+      animation-delay: 0s;
+    }
+
+    @keyframes dotBounce {
+      0%, 80%, 100% {
+        transform: scale(0.4);
+        opacity: 0.4;
+      }
+      40% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+    .progress-bar {
+      margin-top: 30px;
+      width: 200px;
+      height: 3px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 10px;
+      overflow: hidden;
+      z-index: 2;
+    }
+
+    .progress-bar .fill {
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(90deg, #5B4BFF, #A89BFF);
+      border-radius: 10px;
+      animation: progressFill 2s ease-in-out forwards;
+    }
+
+    @keyframes progressFill {
+      0% { width: 0%; }
+      100% { width: 100%; }
+    }
+
+    .flt-glass-pane {
+      display: none !important;
+    }
+  </style>
+
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+  
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyBdP5uvBNl6Db23NYtgrzm9k3ROaozpqeU",
+      authDomain: "movie-app-9d2be.firebaseapp.com",
+      
+      projectId: "movie-app-9d2be",
+      storageBucket: "movie-app-9d2be.firebasestorage.app",
+      messagingSenderId: "235594362366",
+      appId: "1:235594362366:web:00b2aed136b340daea64af"
+    };
+    
+    firebase.initializeApp(firebaseConfig);
+    console.log("✅ Firebase initialized!");
+  </script>
+</head>
+<body>
+
+  <div id="splash">
+
+    <div id="particles"></div>
+
+    <div class="logo-wrapper">
+      <img src="assets/images/logo.png" alt="Movix">
+      <div class="ring"></div>
+      <div class="ring"></div>
+      <div class="ring"></div>
+    </div>
+
+    <div class="app-name">Movix</div>
+
+    <div class="subtitle">🎬 Your Movie World</div>
+
+    <div class="loader">
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+    </div>
+
+    <div class="progress-bar">
+      <div class="fill"></div>
+    </div>
+  </div>
+
+  <script src="main.dart.js" type="application/javascript"></script>
+
+  <script>
+    // Create particles
+    (function createParticles() {
+      const container = document.getElementById('particles');
+      for (let i = 0; i < 30; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        particle.style.left = Math.random() * 100 + '%';
+        particle.style.width = (Math.random() * 4 + 2) + 'px';
+        particle.style.height = particle.style.width;
+        particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+        particle.style.animationDelay = (Math.random() * 10) + 's';
+        particle.style.opacity = Math.random() * 0.5 + 0.2;
+        container.appendChild(particle);
+      }
+    })();
+
+    window.addEventListener('load', function() {
+      setTimeout(function() {
+        var splash = document.getElementById('splash');
+        splash.classList.add('hide');
+        setTimeout(function() {
+          splash.style.display = 'none';
+        }, 800);
+      }, 2500);
+    });
+  </script>
+</body>
+</html>
